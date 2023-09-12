@@ -87,13 +87,27 @@ app.get("/todos/", async (request, response) => {
         statusProperty.includes(status) === true
       ) {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    status = '${status}'
-    AND priority = '${priority}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                status = '${status}'
+                AND priority = '${priority}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
@@ -109,13 +123,27 @@ app.get("/todos/", async (request, response) => {
         statusProperty.includes(status) === true
       ) {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    category = '${category}'
-    AND status = '${status}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                category = '${category}'
+                AND status = '${status}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
@@ -131,13 +159,27 @@ app.get("/todos/", async (request, response) => {
         priorityProperty.includes(priority) === true
       ) {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    category = '${category}'
-    AND priority = '${priority}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                category = '${category}'
+                AND priority = '${priority}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
@@ -147,13 +189,27 @@ app.get("/todos/", async (request, response) => {
         response.send("Invalid Todo Priority");
       } else {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    todo LIKE '%${search_q}%'
-    AND priority = '${priority}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                todo LIKE '%${search_q}%'
+                AND priority = '${priority}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
@@ -163,13 +219,27 @@ app.get("/todos/", async (request, response) => {
         response.send("Invalid Todo Status");
       } else {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    todo LIKE '%${search_q}%'
-    AND status = '${status}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                todo LIKE '%${search_q}%'
+                AND status = '${status}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
@@ -179,39 +249,53 @@ app.get("/todos/", async (request, response) => {
         response.send("Invalid Todo Category");
       } else {
         getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    todo LIKE '%${search_q}%'
-    AND category = '${category}';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                todo LIKE '%${search_q}%'
+                AND category = '${category}';`;
+
+        data = await db.all(getTodosQuery);
+        const ans = (each) => {
+          return {
+            id: each.id,
+            todo: each.todo,
+            priority: each.priority,
+            status: each.status,
+            category: each.category,
+            dueDate: each.due_date,
+          };
+        };
+
+        response.send(data.map((each) => ans(each)));
       }
       break;
 
     default:
       getTodosQuery = `
-   SELECT
-    *
-   FROM
-    todo 
-   WHERE
-    todo LIKE '%${search_q}%';`;
+            SELECT
+                *
+            FROM
+                todo 
+            WHERE
+                todo LIKE '%${search_q}%';`;
+
+      data = await db.all(getTodosQuery);
+      const ans = (each) => {
+        return {
+          id: each.id,
+          todo: each.todo,
+          priority: each.priority,
+          status: each.status,
+          category: each.category,
+          dueDate: each.due_date,
+        };
+      };
+
+      response.send(data.map((each) => ans(each)));
   }
-
-  data = await db.all(getTodosQuery);
-  const ans = (each) => {
-    return {
-      id: each.id,
-      todo: each.todo,
-      priority: each.priority,
-      status: each.status,
-      category: each.category,
-      dueDate: each.due_date,
-    };
-  };
-
-  response.send(data.map((each) => ans(each)));
 });
 
 //API 2
@@ -236,9 +320,9 @@ app.get("/agenda/", async (request, response) => {
     response.status(400);
     response.send("Invalid Due Date");
   } else {
-    const formatDate = format(new Date(2021 - 1 - 21), "yyyy-MM-dd");
+    const formatDate = format(new Date(date), "yyyy-MM-dd");
     const selectTodo = `SELECT * FROM todo WHERE due_date=${formatDate};`;
-    const getQuery = await db.get(selectTodo);
+    const getQuery = await db.all(selectTodo);
     response.send(getQuery);
   }
 });
